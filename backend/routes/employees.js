@@ -6,8 +6,7 @@ const router = express.Router();
 // Create employee
 router.post('/', async (req, res) => {
   try {
-    const emp = new Employee(req.body);
-    await emp.save();
+    const emp = await Employee.create(req.body);
     res.status(201).json(emp);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -28,7 +27,7 @@ router.get('/:id', async (req, res) => {
 // Update
 router.put('/:id', async (req, res) => {
   try {
-    const emp = await Employee.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const emp = await Employee.update(req.params.id, req.body);
     if (!emp) return res.status(404).json({ error: 'Not found' });
     res.json(emp);
   } catch (err) {
@@ -39,8 +38,8 @@ router.put('/:id', async (req, res) => {
 // Delete
 router.delete('/:id', async (req, res) => {
   try {
-    const emp = await Employee.findByIdAndDelete(req.params.id);
-    if (!emp) return res.status(404).json({ error: 'Not found' });
+    const deleted = await Employee.delete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Not found' });
     res.json({ success: true });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -60,41 +59,8 @@ router.delete('/:id', async (req, res) => {
 */
 router.get('/', async (req, res) => {
   try {
-    const {
-      q, department, designation,
-      sortBy = 'createdAt', sortDir = 'desc',
-      page = 1, limit = 10
-    } = req.query;
-
-    const filter = {};
-    if (q) {
-      filter.$or = [
-        { name: { $regex: q, $options: 'i' } },
-        { email: { $regex: q, $options: 'i' } }
-      ];
-    }
-    if (department) filter.department = department;
-    if (designation) filter.designation = designation;
-
-    const skip = (Math.max(1, parseInt(page)) - 1) * parseInt(limit);
-
-    const sort = {};
-    sort[sortBy] = sortDir === 'asc' ? 1 : -1;
-
-    const [items, total] = await Promise.all([
-      Employee.find(filter).sort(sort).skip(skip).limit(parseInt(limit)),
-      Employee.countDocuments(filter)
-    ]);
-
-    res.json({
-      data: items,
-      meta: {
-        total,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        pages: Math.ceil(total / Math.max(1, parseInt(limit)))
-      }
-    });
+    const result = await Employee.findAll(req.query);
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

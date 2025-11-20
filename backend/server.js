@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
+import pool from './config/database.js';
 import employeesRoutes from './routes/employees.js';
 
 dotenv.config();
@@ -16,14 +16,23 @@ app.use(express.json());
 app.use('/api/employees', employeesRoutes);
 
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
 
-// Connect to MongoDB and start the server
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('Mongo connected');
-    app.listen(PORT, () => console.log(`Server started on ${PORT}`));
-  })
-  .catch(err => {
-    console.error('DB connection error', err);
-  });
+// Test MySQL connection and start the server
+const startServer = async () => {
+  try {
+    // Test database connection
+    const connection = await pool.getConnection();
+    console.log('MySQL connected successfully');
+    connection.release();
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Database connection error:', err);
+    process.exit(1);
+  }
+};
+
+startServer();
