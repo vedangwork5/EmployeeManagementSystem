@@ -3,12 +3,22 @@ import pool from '../config/database.js';
 const Employee = {
   // Create a new employee
   create: async (employeeData) => {
-    const { name, email, department, designation, salary, joining_date, status } = employeeData;
+    const {
+      name,
+      email,
+      department = null,
+      designation = null,
+      salary = 0,
+      joining_date = null,
+      status = 'Active'
+    } = employeeData;
+
     const [result] = await pool.execute(
       'INSERT INTO employees (name, email, department, designation, salary, joining_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [name, email, department || null, designation || null, salary || 0, joining_date || null, status || 'Active']
+      [name, email, department, designation, salary, joining_date, status]
     );
-    return { id: result.insertId, ...employeeData };
+
+    return await Employee.findById(result.insertId);
   },
 
   // Find employee by ID
@@ -19,11 +29,27 @@ const Employee = {
 
   // Update employee by ID
   update: async (id, employeeData) => {
-    const { name, email, department, designation, salary, joining_date, status } = employeeData;
-    const [result] = await pool.execute(
-      'UPDATE employees SET name = ?, email = ?, department = ?, designation = ?, salary = ?, joining_date = ?, status = ? WHERE id = ?',
-      [name, email, department, designation, salary, joining_date, status, id]
-    );
+    // Build dynamic update query based on provided fields
+    const allowedFields = ['name', 'email', 'department', 'designation', 'salary', 'joining_date', 'status'];
+    const updates = [];
+    const values = [];
+
+    allowedFields.forEach(field => {
+      if (employeeData.hasOwnProperty(field)) {
+        updates.push(`${field} = ?`);
+        values.push(employeeData[field]);
+      }
+    });
+
+    if (updates.length === 0) {
+      // No fields to update
+      return await Employee.findById(id);
+    }
+
+    values.push(id); // Add id for WHERE clause
+
+    const query = `UPDATE employees SET ${updates.join(', ')} WHERE id = ?`;
+    const [result] = await pool.execute(query, values);
 
     if (result.affectedRows === 0) return null;
     return await Employee.findById(id);
