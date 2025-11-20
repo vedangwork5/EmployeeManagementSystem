@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // Connect to MongoDB and start the server
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('Mongo connected');
     app.listen(PORT, () => console.log(`Server started on ${PORT}`));
