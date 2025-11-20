@@ -1,0 +1,420 @@
+{
+  "info": {
+    "name": "Employee Management API",
+    "description": "Complete API collection for Employee Management System with CRUD operations, search, filters, sorting, and pagination",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Employee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"department\": \"Engineering\",\n  \"designation\": \"Senior Developer\",\n  \"salary\": 75000,\n  \"joining_date\": \"2024-01-15\",\n  \"status\": \"Active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"]
+        },
+        "description": "Create a new employee with all required and optional fields"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Employees (Basic)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"]
+        },
+        "description": "Get all employees with default pagination (page 1, limit 10)"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Employees (With Pagination)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?page=1&limit=20",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (1-based)"
+            },
+            {
+              "key": "limit",
+              "value": "20",
+              "description": "Number of items per page"
+            }
+          ]
+        },
+        "description": "Get employees with custom pagination settings"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Employees",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?q=john",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "q",
+              "value": "john",
+              "description": "Search by name or email"
+            }
+          ]
+        },
+        "description": "Search employees by name or email (case-insensitive)"
+      },
+      "response": []
+    },
+    {
+      "name": "Filter by Department",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?department=Engineering",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "department",
+              "value": "Engineering",
+              "description": "Filter by department"
+            }
+          ]
+        },
+        "description": "Get employees filtered by department"
+      },
+      "response": []
+    },
+    {
+      "name": "Filter by Designation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?designation=Senior Developer",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "designation",
+              "value": "Senior Developer",
+              "description": "Filter by designation"
+            }
+          ]
+        },
+        "description": "Get employees filtered by designation"
+      },
+      "response": []
+    },
+    {
+      "name": "Sort by Name (Ascending)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?sortBy=name&sortDir=asc",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "sortBy",
+              "value": "name",
+              "description": "Field to sort by (name, email, salary, createdAt)"
+            },
+            {
+              "key": "sortDir",
+              "value": "asc",
+              "description": "Sort direction (asc or desc)"
+            }
+          ]
+        },
+        "description": "Get employees sorted by name in ascending order"
+      },
+      "response": []
+    },
+    {
+      "name": "Sort by Salary (Descending)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?sortBy=salary&sortDir=desc",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "sortBy",
+              "value": "salary",
+              "description": "Field to sort by"
+            },
+            {
+              "key": "sortDir",
+              "value": "desc",
+              "description": "Sort direction"
+            }
+          ]
+        },
+        "description": "Get employees sorted by salary in descending order"
+      },
+      "response": []
+    },
+    {
+      "name": "Advanced Search (Combined Filters)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees?q=john&department=Engineering&sortBy=salary&sortDir=desc&page=1&limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"],
+          "query": [
+            {
+              "key": "q",
+              "value": "john",
+              "description": "Search query"
+            },
+            {
+              "key": "department",
+              "value": "Engineering",
+              "description": "Department filter"
+            },
+            {
+              "key": "sortBy",
+              "value": "salary",
+              "description": "Sort field"
+            },
+            {
+              "key": "sortDir",
+              "value": "desc",
+              "description": "Sort direction"
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Items per page"
+            }
+          ]
+        },
+        "description": "Complex query combining search, filters, sorting, and pagination"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Employee",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees/{{employee_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees", "{{employee_id}}"]
+        },
+        "description": "Get a single employee by ID. Replace {{employee_id}} with actual MongoDB ObjectId"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Employee",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.doe@example.com\",\n  \"department\": \"Engineering\",\n  \"designation\": \"Lead Developer\",\n  \"salary\": 85000,\n  \"joining_date\": \"2024-01-15\",\n  \"status\": \"Active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees/{{employee_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees", "{{employee_id}}"]
+        },
+        "description": "Update an existing employee. Replace {{employee_id}} with actual MongoDB ObjectId"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Employee (Partial)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"salary\": 90000,\n  \"designation\": \"Senior Lead Developer\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees/{{employee_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees", "{{employee_id}}"]
+        },
+        "description": "Partially update employee fields. Only provided fields will be updated."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Employee",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/employees/{{employee_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees", "{{employee_id}}"]
+        },
+        "description": "Delete an employee by ID. Replace {{employee_id}} with actual MongoDB ObjectId"
+      },
+      "response": []
+    },
+    {
+      "name": "Bulk Create - Sample Employees",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"department\": \"Marketing\",\n  \"designation\": \"Marketing Manager\",\n  \"salary\": 65000,\n  \"joining_date\": \"2024-02-01\",\n  \"status\": \"Active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"]
+        },
+        "description": "Create sample employee - Marketing"
+      },
+      "response": []
+    },
+    {
+      "name": "Sample Employee - HR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Mike Johnson\",\n  \"email\": \"mike.johnson@example.com\",\n  \"department\": \"HR\",\n  \"designation\": \"HR Executive\",\n  \"salary\": 50000,\n  \"joining_date\": \"2024-03-10\",\n  \"status\": \"Active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"]
+        },
+        "description": "Create sample employee - HR"
+      },
+      "response": []
+    },
+    {
+      "name": "Sample Employee - Finance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Sarah Williams\",\n  \"email\": \"sarah.williams@example.com\",\n  \"department\": \"Finance\",\n  \"designation\": \"Accountant\",\n  \"salary\": 55000,\n  \"joining_date\": \"2024-01-20\",\n  \"status\": \"Active\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "employees"]
+        },
+        "description": "Create sample employee - Finance"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "employee_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
