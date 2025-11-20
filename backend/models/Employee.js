@@ -93,9 +93,10 @@ const Employee = {
     query += ` ORDER BY ${sortColumn} ${sortDirection}`;
 
     // Pagination
-    const offset = (Math.max(1, parseInt(page)) - 1) * parseInt(limit);
-    query += ' LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    const pageNum = Math.max(1, parseInt(page) || 1);
+    const limitNum = Math.max(1, parseInt(limit) || 10);
+    const offset = (pageNum - 1) * limitNum;
+    query += ` LIMIT ${limitNum} OFFSET ${offset}`;
 
     // Execute query
     const [rows] = await pool.execute(query, params);
@@ -124,9 +125,9 @@ const Employee = {
       data: rows,
       meta: {
         total,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        pages: Math.ceil(total / Math.max(1, parseInt(limit)))
+        page: pageNum,
+        limit: limitNum,
+        pages: Math.ceil(total / limitNum)
       }
     };
   }
