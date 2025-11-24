@@ -101,8 +101,8 @@ const EmployeeList = () => {
     if (!deleteEmployee) return;
 
     try {
-      await employeeService.delete(deleteEmployee._id);
-      setEmployees((prev) => prev.filter((emp) => emp._id !== deleteEmployee._id));
+      await employeeService.delete(deleteEmployee.id);
+      setEmployees((prev) => prev.filter((emp) => emp.id !== deleteEmployee.id));
       setDeleteEmployee(null);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete employee');
@@ -192,7 +192,7 @@ const EmployeeList = () => {
             </thead>
             <tbody>
               {employees.map((employee) => (
-                <tr key={employee._id}>
+                <tr key={employee.id}>
                   <td>{employee.name}</td>
                   <td>{employee.email}</td>
                   <td>{employee.department || 'N/A'}</td>
@@ -215,7 +215,7 @@ const EmployeeList = () => {
                       </button>
                       <button
                         className="btn-icon btn-edit"
-                        onClick={() => navigate(`/edit/${employee._id}`)}
+                        onClick={() => navigate(`/edit/${employee.id}`)}
                         title="Edit"
                       >
                         ✏

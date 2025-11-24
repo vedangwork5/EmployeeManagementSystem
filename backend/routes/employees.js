@@ -16,10 +16,13 @@ router.post('/', async (req, res) => {
 // Read single
 router.get('/:id', async (req, res) => {
   try {
+    console.log('GET employee by ID:', req.params.id);
     const emp = await Employee.findById(req.params.id);
-    if (!emp) return res.status(404).json({ error: 'Not found' });
+    console.log('Found employee:', emp);
+    if (!emp) return res.status(404).json({ error: 'Employee not found' });
     res.json(emp);
   } catch (err) {
+    console.error('Error fetching employee:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -27,10 +30,14 @@ router.get('/:id', async (req, res) => {
 // Update
 router.put('/:id', async (req, res) => {
   try {
+    console.log('UPDATE employee ID:', req.params.id);
+    console.log('UPDATE data:', req.body);
     const emp = await Employee.update(req.params.id, req.body);
-    if (!emp) return res.status(404).json({ error: 'Not found' });
+    console.log('Updated employee:', emp);
+    if (!emp) return res.status(404).json({ error: 'Employee not found or no changes made' });
     res.json(emp);
   } catch (err) {
+    console.error('Error updating employee:', err);
     res.status(400).json({ error: err.message });
   }
 });
